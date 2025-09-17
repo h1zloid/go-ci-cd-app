@@ -48,3 +48,21 @@ jobs:
           context: .
           push: true
           tags: hzlq/go-ci-cd-app:latest
+
+    deploy:
+      runs-on: ubuntu-latest
+      needs: docker
+
+      steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            docker pull h1zloid/go-ci-cd-app:latest
+            docker stop backend || true
+            docker rm backend || true
+            docker run -d --name backend -p 80:80 h1zloid/go-ci-cd-app:latest
+
