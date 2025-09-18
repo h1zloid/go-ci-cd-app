@@ -56,7 +56,7 @@ jobs:
     steps:
     - name: Deploy app
       run: |
-        docker pull h1zloid/go-ci-cd-app:latest
+        docker pull hzlq/go-ci-cd-app:latest
         docker stop backend || true
         docker rm backend || true
         docker run -d --name backend -p 80:80 h1zloid/go-ci-cd-app:latest
